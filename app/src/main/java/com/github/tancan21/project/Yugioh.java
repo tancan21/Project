@@ -15,22 +15,31 @@ public class Yugioh {
     }*/
 
 
-    private int id;
+
     private String name;
-    private String type;
-    private String desc;
-    private String race;
     private String archetype;
 
-    public int getId() {
-        return id;
-    }
+  /*
+    private String type;
+    private String race;
+    private String desc;
+    private String id;
+*/
+
 
     public String getName() {
         return name;
     }
 
-    public String getType() {
+    public String getArchetype() {
+        return archetype;
+    }
+/*
+    public String getRace() {
+        return race;
+    }
+
+   public String getType() {
         return type;
     }
 
@@ -38,11 +47,11 @@ public class Yugioh {
         return desc;
     }
 
-    public String getRace() {
-        return race;
+    public String getId() {
+        return id;
     }
 
     public String getArchetype() {
         return archetype;
-    }
+    }*/
 }
