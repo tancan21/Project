@@ -4,12 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,14 +29,45 @@ public class MainActivity extends AppCompatActivity {
     private ListAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private static final String BASE_URL = "https://db.ygoprodeck.com/";
-   // private static final String BASE_URL = "https://pokeapi.co/";
+    private SharedPreferences sharedPreferences;
+    private Gson gson;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        sharedPreferences = getSharedPreferences("application_Onu", Context.MODE_PRIVATE);
+
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
         makeApiCall();
+    }
+
+
+
+       /* List<Yugioh> YugiohList = getDatafromCache();
+        if(YugiohList!= null){
+            showList(YugiohList);
         }
+            else{*/
+           // makeApiCall();
+        //}
+   // }
+
+  /*  private List<Yugioh> getDatafromCache() {
+
+        String jsonYugioh = sharedPreferences.getString("jsonYugiohList", null);
+
+        if(jsonYugioh == null)
+        {
+            return null;
+        } else {
+            Type listType = new TypeToken<List<Yugioh>>() {}.getType();
+            return gson.fromJson(jsonYugioh, listType);
+        }
+    }*/
 
     private void showList(List<Yugioh> yugiohList) {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -41,17 +76,13 @@ public class MainActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-
-
         // define an adapter
         mAdapter = new ListAdapter(yugiohList);
         recyclerView.setAdapter(mAdapter);
     }
 
-
-
-
     private void makeApiCall(){
+
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -69,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<RestYugiohResponse> call, Response<RestYugiohResponse> response) {
                 if(response.isSuccessful() && response.body() != null){
                     List<Yugioh> yugiohList = response.body().getData();
+                   saveList(yugiohList);
                     showList(yugiohList);
                 }
                 else{
@@ -76,12 +108,26 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+
             @Override
             public void onFailure(Call<RestYugiohResponse> call, Throwable t) {
                 showError();
             }
         });
     }
+
+  private void saveList(List<Yugioh> yugiohList) {
+        String jsonString = gson.toJson(yugiohList);
+
+        sharedPreferences
+                .edit()
+                .putString("jsonYugiohList", jsonString)
+                .apply();
+
+        Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
+
+    }
+
 
     private void showError(){
         Toast.makeText(getApplicationContext(), "API Error", Toast.LENGTH_SHORT).show();

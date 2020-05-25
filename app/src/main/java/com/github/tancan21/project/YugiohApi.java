@@ -5,9 +5,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface YugiohApi {
-  /*  @GET("api/v2/pokemon")
-    Call<RestYugiohResponse> getYugiohResponse() ;
-*/
+
    @GET("api/v7/cardinfo.php")
    Call<RestYugiohResponse> getYugiohResponse() ;
 }
