@@ -1,15 +1,13 @@
 package com.github.tancan21.project.presentation.controller;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.github.tancan21.project.Constants;
-import com.github.tancan21.project.data.PokemonApi;
+import com.github.tancan21.project.Singletons;
 import com.github.tancan21.project.presentation.model.Pokemon;
 import com.github.tancan21.project.presentation.model.RestPokemonResponse;
 import com.github.tancan21.project.presentation.view.MainActivity;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -18,8 +16,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainController {
 
@@ -58,13 +54,7 @@ public class MainController {
     }
 
     private void makeApiCall(){
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        PokemonApi pokemonApi = retrofit.create(PokemonApi.class);
-
-        Call<RestPokemonResponse> call = pokemonApi.getPokemonResponse();
+        Call<RestPokemonResponse> call = Singletons.getPokemonAPi().getPokemonResponse();
         call.enqueue(new Callback<RestPokemonResponse>() {
             @Override
             public void onResponse(Call<RestPokemonResponse> call, Response<RestPokemonResponse> response) {

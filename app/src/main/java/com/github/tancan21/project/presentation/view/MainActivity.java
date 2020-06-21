@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.tancan21.project.Constants;
 import com.github.tancan21.project.R;
+import com.github.tancan21.project.Singletons;
 import com.github.tancan21.project.presentation.controller.MainController;
 import com.github.tancan21.project.presentation.model.Pokemon;
 import com.google.gson.Gson;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        controller = new MainController(this, new GsonBuilder().setLenient().create(), getSharedPreferences(Constants.APPLICATION_KADIOGLU, Context.MODE_PRIVATE));
+        controller = new MainController(this, Singletons.getGson(),Singletons.getSharedPreferences(getApplicationContext()));
         controller.onStart();
     }
 
