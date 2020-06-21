@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Project</string>
+    <string name="detail_text">Ecran Detail</string>
 </resources>

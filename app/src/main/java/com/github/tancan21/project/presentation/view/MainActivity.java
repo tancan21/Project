@@ -1,5 +1,6 @@
 package com.github.tancan21.project.presentation.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.tancan21.project.Constants;
 import com.github.tancan21.project.R;
 import com.github.tancan21.project.Singletons;
 import com.github.tancan21.project.presentation.controller.MainController;
@@ -57,8 +59,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void navigateToDetails(Pokemon pokemon) {
-        Toast.makeText(getApplicationContext(), "IT WORKS", Toast.LENGTH_SHORT).show();
-
+        Intent myIntent = new Intent(MainActivity.this, DetailActivity.class);
+        myIntent.putExtra(Constants.POKE_KEY, Singletons.getGson().toJson(pokemon));
+        MainActivity.this.startActivity(myIntent);
     }
 }
 
