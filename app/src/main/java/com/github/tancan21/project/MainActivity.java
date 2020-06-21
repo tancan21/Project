@@ -1,19 +1,16 @@
 package com.github.tancan21.project;
 
+
+import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,61 +25,36 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ListAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private static final String BASE_URL = "https://db.ygoprodeck.com/";
-    private SharedPreferences sharedPreferences;
-    private Gson gson;
+    private static final String BASE_URL = "https://pokeapi.co";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sharedPreferences = getSharedPreferences("application_Onu", Context.MODE_PRIVATE);
-
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
+        showList();
         makeApiCall();
     }
 
-
-
-       /* List<Yugioh> YugiohList = getDatafromCache();
-        if(YugiohList!= null){
-            showList(YugiohList);
-        }
-            else{*/
-           // makeApiCall();
-        //}
-   // }
-
-  /*  private List<Yugioh> getDatafromCache() {
-
-        String jsonYugioh = sharedPreferences.getString("jsonYugiohList", null);
-
-        if(jsonYugioh == null)
-        {
-            return null;
-        } else {
-            Type listType = new TypeToken<List<Yugioh>>() {}.getType();
-            return gson.fromJson(jsonYugioh, listType);
-        }
-    }*/
-
-    private void showList(List<Yugioh> yugiohList) {
+    private void showList(){
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        // define an adapter
-        mAdapter = new ListAdapter(yugiohList);
+        List<String> input = new ArrayList<>();
+        for(int i = 0; i<100;i++)
+        {
+            input.add("Test" + i);
+        }
+
+        mAdapter = new ListAdapter(input);
         recyclerView.setAdapter(mAdapter);
+
     }
 
     private void makeApiCall(){
-
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -92,44 +64,33 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-        YugiohApi yugiohapi = retrofit.create(YugiohApi.class);
+        PokemonApi pokemonApi = retrofit.create(PokemonApi.class);
 
-        Call<RestYugiohResponse> call = yugiohapi.getYugiohResponse();
-        call.enqueue(new Callback<RestYugiohResponse>() {
+        Call<RestPokemonResponse> call = pokemonApi.getPokemonResponse();
+        call.enqueue(new Callback<RestPokemonResponse>() {
             @Override
-            public void onResponse(Call<RestYugiohResponse> call, Response<RestYugiohResponse> response) {
+            public void onResponse(Call<RestPokemonResponse> call, Response<RestPokemonResponse> response) {
                 if(response.isSuccessful() && response.body() != null){
-                    List<Yugioh> yugiohList = response.body().getData();
-                   saveList(yugiohList);
-                    showList(yugiohList);
+                    List<Pokemon> pokemonList = response.body().getResults();
+                    Toast.makeText(getApplicationContext(), "API SUCCESS", Toast.LENGTH_SHORT).show();
+
                 }
-                else{
+                else {
                     showError();
                 }
             }
 
-
             @Override
-            public void onFailure(Call<RestYugiohResponse> call, Throwable t) {
+            public void onFailure(Call<RestPokemonResponse> call, Throwable t) {
                 showError();
             }
         });
     }
 
-  private void saveList(List<Yugioh> yugiohList) {
-        String jsonString = gson.toJson(yugiohList);
-
-        sharedPreferences
-                .edit()
-                .putString("jsonYugiohList", jsonString)
-                .apply();
-
-        Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
-
+    private void showError() {
+        Toast.makeText(getApplicationContext(), "API ERROR", Toast.LENGTH_SHORT).show();
     }
 
 
-    private void showError(){
-        Toast.makeText(getApplicationContext(), "API Error", Toast.LENGTH_SHORT).show();
-    }
 }
+
