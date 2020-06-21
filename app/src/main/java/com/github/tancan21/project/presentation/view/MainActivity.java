@@ -1,20 +1,16 @@
 package com.github.tancan21.project.presentation.view;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.tancan21.project.Constants;
 import com.github.tancan21.project.R;
 import com.github.tancan21.project.Singletons;
 import com.github.tancan21.project.presentation.controller.MainController;
 import com.github.tancan21.project.presentation.model.Pokemon;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
@@ -39,12 +35,30 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ListAdapter(pokemonList);
+
+        recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        mAdapter = new ListAdapter(pokemonList, new ListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Pokemon item) {
+                controller.onItemClick(item);
+            }
+        });
         recyclerView.setAdapter(mAdapter);
     }
 
     public void showError() {
         Toast.makeText(getApplicationContext(), "API ERROR", Toast.LENGTH_SHORT).show();
+    }
+
+    public void navigateToDetails(Pokemon pokemon) {
+        Toast.makeText(getApplicationContext(), "IT WORKS", Toast.LENGTH_SHORT).show();
+
     }
 }
 
