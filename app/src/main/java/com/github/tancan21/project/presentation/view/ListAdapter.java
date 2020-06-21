@@ -1,4 +1,4 @@
-package com.github.tancan21.project;
+package com.github.tancan21.project.presentation.view;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.github.tancan21.project.R;
+import com.github.tancan21.project.presentation.model.Pokemon;
 
 import java.util.List;
 

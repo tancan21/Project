@@ -1,4 +1,4 @@
-package com.github.tancan21.project;
+package com.github.tancan21.project.presentation.view;
 
 
 import android.content.Context;
@@ -10,6 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.tancan21.project.Constants;
+import com.github.tancan21.project.R;
+import com.github.tancan21.project.data.PokemonApi;
+import com.github.tancan21.project.presentation.model.Pokemon;
+import com.github.tancan21.project.presentation.model.RestPokemonResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;

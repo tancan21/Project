@@ -1,4 +1,6 @@
-package com.github.tancan21.project;
+package com.github.tancan21.project.data;
+
+import com.github.tancan21.project.presentation.model.RestPokemonResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

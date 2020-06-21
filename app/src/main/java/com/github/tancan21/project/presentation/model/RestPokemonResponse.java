@@ -1,4 +1,4 @@
-package com.github.tancan21.project;
+package com.github.tancan21.project.presentation.model;
 
 import java.util.List;
 
